@@ -1,0 +1,51 @@
+@use 'sass:map';
+// @import './_variables.scss';
+// @import './_mixins.scss';
+// @import './_theme.scss';
+@use 'variables';
+@use 'mixins';
+@use 'theme';
+
+
+
+// @import '../vendor/bootstrap.min.css';
+// @import '../vendor/masterslider.css';
+// @import '../vendor/owl.carousel.min.css';
+// @import '../vendor/slick.css';
+// @import '../vendor/slicknav.min.css';
+// @import '../vendor/jquery.fancybox.css';
+// @import '../vendor/animations.css';
+
+
+:root { font-family: variables.$font-base; color-scheme: light dark; }
+html, body, #app { height: 100%; }
+body { margin: 0; }
+
+[data-theme='dark'] {
+  background: #0b1020;
+  color: #f7f7f7;
+}
+
+/* ví dụ chuyển .header-nav.sticky -> .c-header__nav--sticky */
+.c-header__nav--sticky { position: sticky; top: 0; }
+
+/* Sticky Header Styles */
+#header.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff; /* Thêm màu nền để không bị trong suốt */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để nổi bật */
+  animation: slideDown 0.5s ease-out; /* Thêm hiệu ứng trượt xuống */
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

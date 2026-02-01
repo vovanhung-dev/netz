@@ -1,0 +1,27 @@
+/* --- Thứ tự ưu tiên tương đương site gốc --- */
+/* @import url('../vendor/bootstrap.min.css'); */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('../vendor/slick.css');
+@import url('../vendor/owl.carousel.min.css');
+@import url('../vendor/masterslider.css');
+@import url('../vendor/animations.css');
+@import url('../vendor/slicknav.min.css');
+@import url('../vendor/style.css');
+@import url('../vendor/custom.css');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+
+
+/* @import url('../vendor/about/bootstrap.min.css');
+@import url('../vendor/about/jquery.fancybox.css');
+@import url('../vendor/about/slick.css');
+@import url('../vendor/about/owl.carousel.min.css');
+@import url('../vendor/about/masterslider.css');
+@import url('../vendor/about/animations.css');
+@import url('../vendor/about/slicknav.min.css');
+@import url('../vendor/about/style.min.css');
+@import url('../vendor/about/styles__ltr.css');
+@import url('../vendor/about/styles.css');
+@import url('../vendor/about/style.css');
+@import url('../vendor/about/custom.css');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"); */

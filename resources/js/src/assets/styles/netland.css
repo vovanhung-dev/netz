@@ -1,0 +1,67 @@
+
+.nl-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: #fff;
+    border-bottom: 1px solid #e7ebdf;
+  }
+  .nl-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nl-logo img { height: 44px; display: block; }
+  
+  .nl-nav { flex: 1; }
+  .nl-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nl-nav a {
+    display: inline-block;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: #0c0c0c;
+  }
+  .nl-nav li.is-active > a {
+    color: #b6862a;
+  }
+  .nl-nav li {
+    position: relative;
+    padding-bottom: 10px;
+  }
+  .nl-nav li.is-active .nl-underline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 120px;
+    height: 3px;
+    background: #b6862a;
+    border-radius: 2px;
+    content: "";
+    display: block;
+  }
+  
+  /* Language inline VI | EN */
+  .nl-lang.inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .nl-lang.inline a { color: #0c0c0c; }
+  .nl-lang.inline a.active { color: #b6862a; }
+  .nl-lang.inline .sep { color: #8b8b8b; }
+  

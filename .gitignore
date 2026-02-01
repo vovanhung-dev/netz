@@ -1,0 +1,67 @@
+# Dependencies
+/node_modules
+/vendor
+
+# Laravel
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*
+!.gitkeep
+
+# Environment
+.env
+.env.backup
+.env.production
+.env.local
+.env.*.local
+
+# PHP
+/.phpunit.cache
+.phpunit.result.cache
+phpunit.xml
+
+# Composer
+auth.json
+
+# Logs
+npm-debug.log
+yarn-error.log
+*.log
+
+# IDE / Editors
+/.fleet
+/.idea
+/.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# Vite / Build
+*.local
+.vite
+
+# Testing
+/coverage
+
+# Misc
+*.swp
+*.swo
+*~
+*.txt

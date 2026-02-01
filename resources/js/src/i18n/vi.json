@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "Công ty Tôi",
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "language": "Ngôn ngữ"
+  },
+  "home": {
+    "headline": "Chào mừng bạn",
+    "cta": "Xem Dự án"
+  },
+  "menu": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "business_lines": "Lĩnh vực",
+    "project": "Dự án",
+    "news": "Tin tức",
+    "careers": "Khóa học",
+    "contact_us": "Liên hệ với chúng tôi"
+  },
+  "hero": {
+    "subtitle": "SKYLOVE",
+    "title": "Bứt phá giới hạn của bản thân",
+    "desc": "Với sứ mệnh giúp các bạn trẻ Bứt phá giới hạn của bản thân” để thực hiện hóa ước mơ cho một tương lai tươi sáng và được làm việc trong lĩnh vực Hàng không. Skylove được hình thành với những con người không có gì là xuất chúng.",
+    "cta": "Xem thêm"
+  },
+  "about": {
+    "title": "Về chúng tôi",
+    "desc": "Hơn một thập kỷ, Netland khẳng định vị thế bằng các dự án BĐS tiêu biểu trên khắp Việt Nam – với khát vọng kiến tạo không gian sống văn minh và gia tăng giá trị bền vững cho xã hội.\n\nChúng tôi đầu tư, phát triển và đưa ra thị trường các dự án quy mô tại TP.HCM, Bà Rịa–Vũng Tàu, Khánh Hòa, Bình Định, Bình Thuận… Cùng đội ngũ lãnh đạo giàu kinh nghiệm và các đối tác chiến lược trong/ngoài nước như Sanei Architecture Planning Ltd, G-7 Holdings Inc, Anabuki Housing Service Vietnam, Netland không ngừng nâng chuẩn phát triển, mang đến sản phẩm chất lượng và giá trị thiết thực cho khách hàng.",
+    "viewMore": "Xem thêm"
+  },
+  "stats": {
+    "title": "Hành trình phát triển",
+    "projects": "Dự án",
+    "customers": "Khách hàng",
+    "partners": "Đối tác chiến lược",
+    "provinces": "tỉnh/thành khu vực Nam Bộ",
+    "awards": "Giải thưởng"
+  },
+  "projects": {
+    "title": "Dự án nổi bật",
+    "viewMore": "Xem thêm",
+    "p1": "Welltone Luxury Residence",
+    "p2": "Aria Vũng Tàu",
+    "p3": "Takashi Ocean Suite Kỳ Co"
+  },
+  "news": {
+    "title": "Tin tức",
+    "viewMore": "Xem thêm",
+    "n1": "Xu hướng mới của thị trường BĐS Việt Nam 2025",
+    "date": "18/09/2025"
+  },
+  "partner": {
+    "title": "Đối tác",
+    "tab1": "Đối tác chiến lược",
+    "tab2": "Đối tác ngân hàng"
+  },
+  "footer": {
+    "address": "Địa chỉ:<br />19 Đường Phạm Ngũ Lão, <br /> Phường Dĩ An, Quận Bình Tân, Tp. Hồ Chí Minh",
+    "hotline": "Liên Lạc: 1900 599 933",
+    "email": "Email: SKYLOVE.vn@gmail.com",
+    "catalog": "Danh mục",
+    "activity": "Hoạt động",
+    "outstanding": "Dự án tiêu biểu",
+    "copyright": "Bản quyền © 2025 Netland. Đã đăng ký."
+  },
+  "lang": "Ngôn ngữ",
+  "vi": "VI",
+  "en": "EN"
+}

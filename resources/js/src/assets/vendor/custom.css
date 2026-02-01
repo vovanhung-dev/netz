@@ -1,0 +1,8 @@
+
+.bg-red {background:#fbfbfb}
+.lcol.hide {
+    display: none;
+}
+.lcol.show {
+    display: block;
+}
