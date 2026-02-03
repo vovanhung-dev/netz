@@ -1,0 +1,541 @@
+
+
+================================================================================
+[1] TỔNG QUAN DỰ ÁN
+================================================================================
+
+Đây là website doanh nghiệp được xây dựng theo kiến trúc:
+- Backend: Laravel 10 (PHP Framework)
+- Frontend: Vue 3 + TypeScript (Single Page Application - SPA)
+- Build Tool: Vite
+- Database: MySQL
+
+Website bao gồm các chức năng chính:
+- Trang chủ giới thiệu công ty
+- Quản lý tin tức (News)
+- Quản lý khóa học (Courses)
+- Quản lý tuyển dụng (Careers)
+- Form liên hệ (Contact)
+- Hệ thống quản trị (Admin Panel)
+
+================================================================================
+[2] CẤU TRÚC THƯ MỤC
+================================================================================
+
+netz/
+├── app/                        # Code PHP Laravel
+│   ├── Http/
+│   │   ├── Controllers/        # Xử lý logic API
+│   │   ├── Middleware/         # Middleware (auth, cors, etc.)
+│   │   └── Requests/           # Form validation
+│   ├── Models/                 # Eloquent Models (kết nối DB)
+│   └── Mail/                   # Email templates
+│
+├── config/                     # Cấu hình Laravel
+│   ├── app.php                 # Cấu hình ứng dụng
+│   ├── database.php            # Cấu hình database
+│   └── mail.php                # Cấu hình email (Resend)
+│
+├── database/
+│   ├── migrations/             # Tạo cấu trúc bảng DB
+│   └── seeders/                # Dữ liệu mẫu
+│
+├── resources/
+│   ├── js/src/                 # Source Vue 3 (Frontend)
+│   │   ├── assets/             # Hình ảnh, CSS, fonts
+│   │   ├── components/         # Vue components tái sử dụng
+│   │   ├── composables/        # Vue composables (hooks)
+│   │   ├── layouts/            # Layout templates
+│   │   ├── pages/              # Các trang (guest + admin)
+│   │   ├── router/             # Vue Router config
+│   │   ├── stores/             # Pinia stores (state)
+│   │   ├── api/                # HTTP client (axios)
+│   │   ├── i18n/               # Đa ngôn ngữ (vi, en)
+│   │   └── main.ts             # Entry point Vue
+│   └── views/                  # Blade templates Laravel
+│
+├── routes/
+│   ├── api.php                 # API routes
+│   └── web.php                 # Web routes
+│
+├── public/                     # Public assets
+│   ├── build/                  # Vite build output
+│   └── storage/                # Symlink to storage/app/public
+│
+├── storage/
+│   └── app/public/             # Upload files (news, courses, cv)
+│
+├── .env                        # Environment variables
+├── vite.config.js              # Vite configuration
+├── package.json                # NPM dependencies
+└── composer.json               # PHP dependencies
+
+================================================================================
+[3] BACKEND - LARAVEL
+================================================================================
+
+--------------------------------------------------------------------------------
+3.1 MODELS (app/Models/)
+--------------------------------------------------------------------------------
+
+Các model đại diện cho bảng trong database:
+
+■ News.php - Tin tức
+  - Trường: id, title, slug, excerpt, body, cover_image_url, status,
+            published_at, author_id
+  - Accessor: getCoverImageUrlAttribute() - chuyển path thành full URL
+  - Mutator: setCoverImageUrlAttribute() - lưu relative path
+
+■ Course.php - Khóa học
+  - Trường: tương tự News
+  - Có cùng accessor/mutator như News
+
+■ Career.php - Vị trí tuyển dụng
+  - Trường: id, position, number, expiration_date, description, is_open
+  - Scope: open(), active(), search()
+
+■ CareerApplication.php - Đơn ứng tuyển
+  - Trường: id, career_id, name, phone, email, position, address, cv_path
+
+■ Contact.php - Liên hệ
+  - Trường: id, name, email, phone, subject, message, is_read
+
+■ User.php - Admin users
+  - Sử dụng Laravel Sanctum để xác thực API
+
+--------------------------------------------------------------------------------
+3.2 CONTROLLERS (app/Http/Controllers/)
+--------------------------------------------------------------------------------
+
+■ NewsController.php
+  - index()      : Danh sách tin (admin)
+  - indexGuest() : Danh sách tin (public, chỉ published)
+  - show($id)    : Chi tiết theo ID
+  - showSlug()   : Chi tiết theo slug
+  - store()      : Tạo mới
+  - update()     : Cập nhật
+  - destroy()    : Xóa
+
+■ CourseController.php
+  - Tương tự NewsController
+
+■ CareerController.php
+  - index()   : Danh sách vị trí tuyển dụng
+  - apply()   : Nộp đơn ứng tuyển (upload CV, gửi email)
+
+■ ContactController.php
+  - store()   : Gửi form liên hệ (lưu DB + gửi email)
+
+■ AuthController.php
+  - login()   : Đăng nhập admin
+  - logout()  : Đăng xuất
+  - me()      : Thông tin user hiện tại
+
+--------------------------------------------------------------------------------
+3.3 ROUTES (routes/api.php)
+--------------------------------------------------------------------------------
+
+Public routes (không cần đăng nhập):
+  GET  /api/news              - Danh sách tin tức
+  GET  /api/news/{slug}       - Chi tiết tin tức
+  GET  /api/courses           - Danh sách khóa học
+  GET  /api/courses/{slug}    - Chi tiết khóa học
+  GET  /api/careers           - Danh sách tuyển dụng
+  POST /api/careers/apply     - Nộp đơn ứng tuyển
+  POST /api/contact/send      - Gửi liên hệ
+
+Auth routes:
+  POST /api/login             - Đăng nhập
+  POST /api/logout            - Đăng xuất (cần token)
+  GET  /api/me                - Thông tin user (cần token)
+
+Admin routes (cần đăng nhập + throttle:60,1):
+  /api/admin/news             - CRUD tin tức
+  /api/admin/courses          - CRUD khóa học
+  /api/admin/careers          - CRUD tuyển dụng
+  /api/admin/contacts         - Quản lý liên hệ
+  /api/admin/career-applications - Quản lý đơn ứng tuyển
+
+--------------------------------------------------------------------------------
+3.4 EMAIL (app/Mail/)
+--------------------------------------------------------------------------------
+
+Sử dụng Resend làm mail provider:
+
+■ HrCareerApplicationMail.php
+  - Gửi cho HR khi có đơn ứng tuyển mới
+  - Đính kèm file CV
+
+■ ApplicantCareerConfirmationMail.php
+  - Gửi xác nhận cho ứng viên
+
+■ ContactReceivedMail.php
+  - Gửi thông báo khi có liên hệ mới
+
+Cấu hình email trong .env:
+  MAIL_MAILER=resend
+  RESEND_API_KEY=re_xxxxx
+  MAIL_FROM_ADDRESS=noreply@domain.com
+
+================================================================================
+[4] FRONTEND - VUE 3
+================================================================================
+
+--------------------------------------------------------------------------------
+4.1 ENTRY POINT (resources/js/src/main.ts)
+--------------------------------------------------------------------------------
+
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import pinia from './stores'
+import i18n from './i18n'
+
+createApp(App)
+  .use(router)      // Vue Router
+  .use(pinia)       // Pinia (state management)
+  .use(i18n)        // i18n (đa ngôn ngữ)
+  .mount('#app')
+
+--------------------------------------------------------------------------------
+4.2 ROUTER (resources/js/src/router/index.ts)
+--------------------------------------------------------------------------------
+
+Cấu trúc routes:
+
+/ (DefaultLayout)
+├── /                    - HomePage
+├── /about-us            - AboutPage
+├── /business-lines      - BusinessLinesPage
+├── /project             - ProjectPage
+├── /courses             - CoursePage
+├── /courses/:slug       - CourseDetailView
+├── /news                - NewsPage
+├── /news/:slug          - NewsDetailView
+├── /careers             - CareersPage
+└── /contact-us          - ContactUsPage
+
+/admin/login             - Login (guestOnly)
+
+/admin (AdminLayout, requiresAuth)
+├── /admin/news          - NewsList
+├── /admin/news/new      - NewsForm (tạo mới)
+├── /admin/news/:id      - NewsDetailView (chỉnh sửa)
+├── /admin/courses       - CourseList
+├── /admin/courses/new   - CourseForm
+├── /admin/courses/:id   - CourseDetailView
+├── /admin/careers       - CareerList
+├── /admin/contacts      - ContactList
+└── /admin/career-applications - CareerApplicationList
+
+Navigation Guards:
+- requiresAuth: Chuyển về login nếu chưa đăng nhập
+- guestOnly: Chuyển về admin nếu đã đăng nhập
+
+--------------------------------------------------------------------------------
+4.3 STORES (resources/js/src/stores/)
+--------------------------------------------------------------------------------
+
+Sử dụng Pinia để quản lý state:
+
+■ auth.ts
+  - state: token, user, isAuth
+  - actions: login(), logout(), fetchUser()
+  - Token lưu trong localStorage
+
+--------------------------------------------------------------------------------
+4.4 API CLIENT (resources/js/src/api/http.ts)
+--------------------------------------------------------------------------------
+
+Sử dụng Axios:
+- baseURL: /api
+- Tự động gắn Authorization header từ localStorage
+- Interceptor xử lý lỗi 401 (redirect to login)
+
+--------------------------------------------------------------------------------
+4.5 COMPONENTS (resources/js/src/components/)
+--------------------------------------------------------------------------------
+
+Components tái sử dụng:
+
+■ Header.vue           - Header với navigation
+■ FooterSection.vue    - Footer
+■ HeroCarousel.vue     - Slider trang chủ
+■ AboutSection.vue     - Section giới thiệu
+■ ProjectsGrid.vue     - Grid dự án
+■ PartnersCarousel.vue - Carousel đối tác
+■ DevelopmentStats.vue - Thống kê phát triển
+■ LanguageSwitcher.vue - Chuyển đổi ngôn ngữ
+
+--------------------------------------------------------------------------------
+4.6 LAYOUTS (resources/js/src/layouts/)
+--------------------------------------------------------------------------------
+
+■ DefaultLayout.vue
+  - Layout cho trang public (guest)
+  - Bao gồm: Header + <router-view> + Footer
+
+■ AdminLayout.vue
+  - Layout cho trang admin
+  - Bao gồm: Sidebar + Header + <router-view>
+
+--------------------------------------------------------------------------------
+4.7 I18N (resources/js/src/i18n/)
+--------------------------------------------------------------------------------
+
+Đa ngôn ngữ với vue-i18n:
+- vi.json: Tiếng Việt
+- en.json: English
+
+Sử dụng trong template:
+  {{ $t('home.welcome') }}
+
+================================================================================
+[5] DATABASE
+================================================================================
+
+--------------------------------------------------------------------------------
+5.1 CÁC BẢNG CHÍNH
+--------------------------------------------------------------------------------
+
+■ users
+  - id, name, email, password, remember_token, timestamps
+
+■ news
+  - id, title, slug, excerpt, body, cover_image_url,
+    status (draft/published/archived), published_at, author_id, timestamps
+
+■ courses
+  - id, title, slug, excerpt, body, cover_image_url,
+    status (draft/published), published_at, author_id, timestamps
+
+■ careers
+  - id, position, number, expiration_date, description, is_open,
+    timestamps, deleted_at (soft delete)
+
+■ career_applications
+  - id, career_id, name, phone, email, position, address, cv_path, timestamps
+
+■ contacts
+  - id, name, email, phone, subject, message, is_read, timestamps
+
+■ personal_access_tokens (Laravel Sanctum)
+  - Lưu API tokens cho authentication
+
+--------------------------------------------------------------------------------
+5.2 IMAGE STORAGE
+--------------------------------------------------------------------------------
+
+Ảnh được lưu trong: storage/app/public/
+  - news/          : Ảnh tin tức (webp)
+  - courses/       : Ảnh khóa học
+  - cv/            : File CV ứng tuyển
+
+Symlink: public/storage -> storage/app/public
+Tạo bằng lệnh: php artisan storage:link
+
+URL ảnh: http://domain.com/storage/news/filename.webp
+
+================================================================================
+[6] BUILD & DEPLOYMENT
+================================================================================
+
+--------------------------------------------------------------------------------
+6.1 DEVELOPMENT
+--------------------------------------------------------------------------------
+
+# Cài đặt dependencies
+composer install
+npm install
+
+# Tạo file .env
+cp .env.example .env
+php artisan key:generate
+
+# Tạo database và chạy migrations
+php artisan migrate
+
+# Tạo symlink storage
+php artisan storage:link
+
+# Chạy dev server
+php artisan serve          # Backend: http://127.0.0.1:8000
+npm run dev                # Frontend với HMR
+
+--------------------------------------------------------------------------------
+6.2 PRODUCTION BUILD
+--------------------------------------------------------------------------------
+
+# Build frontend
+npm run build
+
+# Optimize Laravel
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+Output build: public/build/
+
+--------------------------------------------------------------------------------
+6.3 CẤU HÌNH QUAN TRỌNG (.env)
+--------------------------------------------------------------------------------
+
+APP_NAME=BSDC
+APP_ENV=local
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=netz
+DB_USERNAME=root
+DB_PASSWORD=root
+
+MAIL_MAILER=resend
+RESEND_API_KEY=re_xxxxx
+MAIL_FROM_ADDRESS=noreply@domain.com
+MAIL_FROM_NAME="EduApply VKU"
+MAIL_HR_ADDRESS=hr@domain.com
+
+================================================================================
+[7] LUỒNG XỬ LÝ CHÍNH
+================================================================================
+
+--------------------------------------------------------------------------------
+7.1 ĐĂNG NHẬP ADMIN
+--------------------------------------------------------------------------------
+
+1. User vào /admin/login
+2. Nhập email + password
+3. Frontend POST /api/login
+4. Backend xác thực, trả về token
+5. Frontend lưu token vào localStorage
+6. Redirect đến /admin
+
+--------------------------------------------------------------------------------
+7.2 TẠO TIN TỨC MỚI
+--------------------------------------------------------------------------------
+
+1. Admin vào /admin/news/new
+2. Điền form: title, excerpt, body, upload ảnh
+3. Frontend POST /api/admin/news với FormData
+4. Backend:
+   - Validate dữ liệu
+   - Xử lý ảnh (resize, convert webp)
+   - Lưu ảnh vào storage/app/public/news/
+   - Tạo slug từ title
+   - Lưu vào database
+5. Trả về response với data đã tạo
+
+--------------------------------------------------------------------------------
+7.3 NỘP ĐƠN ỨNG TUYỂN
+--------------------------------------------------------------------------------
+
+1. User vào /careers
+2. Điền form: name, phone, email, position, upload CV
+3. Frontend POST /api/careers/apply với FormData
+4. Backend:
+   - Validate dữ liệu + file
+   - Lưu CV vào storage/app/cv/
+   - Lưu thông tin vào career_applications
+   - Gửi email cho HR (đính kèm CV)
+   - Gửi email xác nhận cho ứng viên
+5. Trả về success message
+
+================================================================================
+[8] KHẮC PHỤC LỖI THƯỜNG GẶP
+================================================================================
+
+--------------------------------------------------------------------------------
+8.1 LỖI HÌNH ẢNH KHÔNG HIỂN THỊ
+--------------------------------------------------------------------------------
+
+Nguyên nhân: Symlink storage chưa được tạo hoặc bị hỏng
+
+Cách sửa:
+  php artisan storage:link
+
+Nếu báo lỗi "already exists":
+  # Xóa symlink cũ rồi tạo lại
+  rm public/storage                    # Linux/Mac
+  rmdir public\storage                 # Windows
+  php artisan storage:link
+
+Kiểm tra symlink đã hoạt động:
+  ls -la public/storage                # Phải thấy link đến storage/app/public
+
+--------------------------------------------------------------------------------
+8.2 LỖI CACHE - THAY ĐỔI KHÔNG CÓ HIỆU LỰC
+--------------------------------------------------------------------------------
+
+Xóa tất cả cache Laravel:
+  php artisan config:clear
+  php artisan cache:clear
+  php artisan route:clear
+  php artisan view:clear
+
+Hoặc chạy tất cả 1 lệnh:
+  php artisan optimize:clear
+
+--------------------------------------------------------------------------------
+8.3 LỖI FRONTEND KHÔNG CẬP NHẬT
+--------------------------------------------------------------------------------
+
+Build lại frontend:
+  npm run build
+
+Nếu đang chạy dev server, restart:
+  # Tắt server cũ (Ctrl+C)
+  npm run dev
+
+--------------------------------------------------------------------------------
+8.4 LỖI DATABASE / MIGRATION
+--------------------------------------------------------------------------------
+
+Chạy lại migrations:
+  php artisan migrate
+
+Reset toàn bộ database (MẤT DỮ LIỆU):
+  php artisan migrate:fresh
+
+Reset + seed dữ liệu mẫu:
+  php artisan migrate:fresh --seed
+
+--------------------------------------------------------------------------------
+8.5 LỖI COMPOSER / NPM
+--------------------------------------------------------------------------------
+
+Cài lại PHP dependencies:
+  composer install
+
+Cài lại NPM dependencies:
+  rm -rf node_modules
+  npm install
+
+--------------------------------------------------------------------------------
+8.6 LỖI PERMISSION (Linux/Mac)
+--------------------------------------------------------------------------------
+
+Cấp quyền cho storage và cache:
+  chmod -R 775 storage
+  chmod -R 775 bootstrap/cache
+  chown -R www-data:www-data storage bootstrap/cache
+
+--------------------------------------------------------------------------------
+8.7 LỆNH KHÔI PHỤC NHANH (CHẠY KHI CÓ LỖI)
+--------------------------------------------------------------------------------
+
+# Copy đoạn này và chạy khi gặp lỗi hiển thị/cache:
+
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+php artisan storage:link
+npm run build
+
+# Hoặc ngắn gọn hơn:
+php artisan optimize:clear && php artisan storage:link && npm run build
+
+================================================================================
+                              HẾT TÀI LIỆU
+================================================================================

@@ -2261,7 +2261,7 @@ button {
 		
 /*TUYEN DUNG*/		
 .p-recruitment{
-	background:url(../images/banner-tuyen-dung.jpg) center top no-repeat;
+	background:url(../images/banner-tintuc.jpg) center top no-repeat;
 	 background-size:cover;	
 }
 	.cv-apply .right-form{padding-top:30px; padding-right:0px; background-color:transparent;}
@@ -2404,11 +2404,11 @@ button {
 					background-size: 15px;
 				}
 			.cv-apply .mail-proj,#contact .mail-proj {
-					background: url(../images/email-f-2.svg) left 7px no-repeat;
+					background: url(../images/email-2.svg) left 7px no-repeat;
 					background-size: 15px;
 				}
 			.cv-apply .webs-proj,#contact .webs-proj {
-				background: url(../images/website-2.svg) left 5px no-repeat;
+				background: url(../images/map-2.svg) left 5px no-repeat;
 				background-size: 15px;
 			}
 			
@@ -2536,7 +2536,7 @@ button {
 	
 /*CO PHIEU*/	
 	.p-codong {
-		background: url(../images/banner-quan-he-co-dong.jpg) center top no-repeat;
+		background: url(../images/banner-tintuc.jpg) center top no-repeat;
 		background-size: cover;
 	}
 		.page-section.cophieu{background:url(../images/bg-news.jpg) center top no-repeat; background-size:cover;}
@@ -2642,7 +2642,7 @@ button {
 			.listd-download{width:100%; margin-bottom:30px;}	
 				.list-col{
 					color: #fff;
-					background:url(../images/line-1.png) left bottom repeat-x;
+					background:none; border-bottom: 1px solid rgba(255,255,255,0.3) left bottom repeat-x;
 					width: calc(50% - 20px);
 					float: left;
 					padding-bottom: 15px;

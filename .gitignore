@@ -65,3 +65,4 @@ Homestead.yaml
 *.swo
 *~
 *.txt
+!giaithichsourcecode.txt
