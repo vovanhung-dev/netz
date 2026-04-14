@@ -1,22 +1,22 @@
-# Netz - Website Doanh Nghiep
+# Netz - Website Doanh Nghiệp
 
-## Danh Muc
+## Danh Mục
 
-`Full Stack` `Ung Dung Web`
+`Full Stack` `Ứng Dụng Web`
 
-## Gioi Thieu
+## Giới Thiệu
 
-Website doanh nghiep xay dung theo kien truc Laravel (backend) + Vue 3 + TypeScript (frontend SPA), ho tro gioi thieu cong ty va quan ly tin tuc.
+Website doanh nghiệp xây dựng theo kiến trúc Laravel (backend) + Vue 3 + TypeScript (frontend SPA), hỗ trợ giới thiệu công ty và quản lý tin tức.
 
-## Chuc Nang
+## Chức Năng
 
-- Trang chu gioi thieu cong ty
-- Quan ly tin tuc (News) - CRUD
-- Giao dien SPA mượt ma voi Vue 3
-- Responsive design voi TailwindCSS
-- Quan tri noi dung qua admin panel
+- Trang chủ giới thiệu công ty
+- Quản lý tin tức (News) - CRUD
+- Giao diện SPA mượt mà với Vue 3
+- Responsive design với TailwindCSS
+- Quản trị nội dung qua admin panel
 
-## Cong Nghe Su Dung
+## Công Nghệ Sử Dụng
 
 - **Backend:** Laravel 10 (PHP)
 - **Frontend:** Vue 3 + TypeScript
@@ -24,14 +24,14 @@ Website doanh nghiep xay dung theo kien truc Laravel (backend) + Vue 3 + TypeScr
 - **Build Tool:** Vite
 - **Database:** MySQL
 
-## Yeu Cau He Thong
+## Yêu Cầu Hệ Thống
 
 - PHP >= 8.1
 - Composer
 - Node.js >= 16
 - MySQL >= 5.7
 
-## Cai Dat
+## Cài Đặt
 
 ```bash
 composer install
@@ -41,9 +41,9 @@ php artisan key:generate
 php artisan migrate
 ```
 
-Import database tu file `database.sql` neu can.
+Import database từ file `database.sql` nếu cần.
 
-## Chay Ung Dung
+## Chạy Ứng Dụng
 
 ```bash
 php artisan serve
